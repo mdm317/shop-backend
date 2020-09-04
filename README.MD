@@ -1,6 +1,9 @@
 ### 쇼핑몰 백엔드 설계 
-#### restfull+ prisma + tdd
+#### restfull+ prisma + 
 
 /user
-+ [ ] /login
-+ [ ] /join
++ [x] /
++ [x] /login
++ [x] /join
++ [x] /checkId
+

@@ -3,22 +3,34 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
-    "test": "node_modules/.bin/mocha $(find ./ -name '*.js') --recursive -w"
+    "start": "nodemon --exec babel-node src/app.js",
+    "test": "cross-env NODE_ENV=test mocha -r  @babel/register ./test/Controllers/user.spec.js",
+    "test2":"cross-env NODE_ENV=test mocha -r  @babel/register ./test/mochaTest.spec.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.11.4",
     "@babel/node": "^7.10.5",
+    "@babel/polyfill": "^7.11.5",
     "@babel/preset-env": "^7.11.0",
+    "@prisma/cli": "^2.5.1",
+    "@prisma/client": "^2.5.1",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "express-session": "^1.17.1",
+    "helmet": "^4.1.0",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.5.1",
+    "@babel/register": "^7.11.5",
+    "cross-env": "^7.0.2",
     "mocha": "^8.1.3",
     "nodemon": "^2.0.4",
     "should": "^13.2.3",
