@@ -1,6 +1,4 @@
 import { getUserController, loginController, joinController, checkIdController, editProfileController } from '../Controllers/user';
-import passport from 'passport';
-import {isAuthByPassport} from '../middlewares';
 const express = require('express');
 
 const userRouter =  express.Router();

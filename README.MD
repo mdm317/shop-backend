@@ -1,9 +1,15 @@
 ### 쇼핑몰 백엔드 설계 
-#### restfull+ prisma + 
+#### restapi+ prisma + supertest
 
 /user
 + [x] /
 + [x] /login
 + [x] /join
-+ [x] /checkId
++ [x] /checkId  ajax
++ [x] /editProfile
+/product
++ [x] /
++ [x] /add
++ [ ] /willdelete
++ [ ] /delete
 

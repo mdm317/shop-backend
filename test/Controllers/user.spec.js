@@ -15,7 +15,6 @@ const hasData = (datas)=>{
         obj.should.have.property(data);
       }
     }
-
   }
 }
 describe("GET /user",()=>{
