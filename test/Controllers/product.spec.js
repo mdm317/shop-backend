@@ -1,7 +1,7 @@
 import app from '../../src/app';
 import request from 'supertest';
 import prisma from '../../src/db';
-import should, { doesNotThrow } from 'should';
+import should from 'should';
 import bcypt from 'bcrypt';
 
 import dotenv from 'dotenv';
@@ -49,7 +49,7 @@ describe('product controllers test ', ()=>{
         await prisma.product.deleteMany();
         await prisma.user.deleteMany();
     })
-    describe('getpruducts controller',()=>{
+    describe('get products controller',()=>{
 
         it('상품들 얻어오기', (done)=>{
             request(app)
@@ -63,7 +63,7 @@ describe('product controllers test ', ()=>{
             })
         });
     });
-    describe('add controler',()=>{
+    describe('add products controler',()=>{
         describe('admin 으로 추가 할때 ',()=>{
             const agent = request.agent(app);
             it('admin 계정으로 로그인',done=>{

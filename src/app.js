@@ -18,6 +18,7 @@ import bodyParser from "body-parser";
 import userRouter from "./Routers/user";
 import expressSession from 'express-session';
 import productRouter from './Routers/product';
+import qnaRouter from './Routers/qna';
 
 
 const PORT = process.env.PORT || 4000;
@@ -52,7 +53,9 @@ app.listen(PORT, handleListening);
 
 app.use(cors());
 app.use('/user',userRouter);
-app.use('/product', productRouter)
+app.use('/product', productRouter);
+app.use('/qna', qnaRouter);
+
 app.get('/',(req,res)=>{
     res.send('home');
 })

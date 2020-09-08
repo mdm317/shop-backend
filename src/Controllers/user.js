@@ -17,7 +17,6 @@ export const getUserController = async(req,res)=>{
 //     res.send('hi?');
 // }
 export const loginController = async(req,res,next)=>{
-    console.log('call?')
     passport.authenticate('local', (err, user, info)=>{
         if(err){
             console.error(err);

@@ -10,6 +10,10 @@
 /product
 + [x] /
 + [x] /add
-+ [ ] /willdelete
-+ [ ] /delete
-
++ [x] /willdelete
++ [x] /delete
+/qna
++ [x] /addQuestion
++ [x] /addAnswer
++ [x] /edit/:qId
++ [ ] /get
