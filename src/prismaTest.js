@@ -3,30 +3,24 @@ const prisma = new PrismaClient()
 
 async function main() {
     try {
-      const product = await prisma.product.create({data:{
-        price:1, 
-        stock:2, 
-        description:'d', 
-        thumbnail:'t', 
-        imageUrl:'u'}});
-        await prisma.product.create({data:{
-            price:1, 
-            stock:2, 
-            description:'d', 
-            thumbnail:'t', 
-            imageUrl:'u'}});
-            await prisma.product.create({data:{
-                price:1, 
-                stock:2, 
-                description:'d', 
-                thumbnail:'t', 
-                imageUrl:'u'}});
-        const products = await prisma.product.findOne({
-            where:{
-                id:product.id
-            }
-        });
-        console.log(products)
+      const user =  await prisma.user.create({data:{
+        userId:"user", 
+        password:"p",
+        phone:'p1',
+        name:'n1',
+        isAdmin:true}});
+        console.log(user);
+        await prisma.user.update({where:{
+          id:user.id
+        },data:{
+          userId:'ss'
+        }
+
+
+      });
+      console.log(user);
+      const user2 = await prisma.user.findOne({where:{id:user.id}});
+      console.log(user2);
 
     } catch (error) {
         console.log(error);

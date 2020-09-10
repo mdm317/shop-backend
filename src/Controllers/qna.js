@@ -28,7 +28,6 @@ export const addQuestionController = async(req,res)=>{
 export const addAnswerController = async(req,res)=>{
     if(!req.user || !req.user.isAdmin){
         return res.status(403).send('You must be admin')
-        return res.sendStatus(403);
     }
     
     const {title,content,qId,productId} = req.body;

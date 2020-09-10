@@ -16,8 +16,8 @@ passport.deserializeUser(async(id, done)=>{
         console.log(user);
         return done(null, user);    //req.user
     } catch (error) {
-        console.error(e);
-        return done(e);
+        console.error(error);
+        return done(error);
     }
 });
 //사용자의 정보를 mysql 에서 부여한id를 가지고 다시 정보를 불러온다

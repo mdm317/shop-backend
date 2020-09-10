@@ -7,6 +7,8 @@ import bcypt from 'bcrypt';
 import dotenv from 'dotenv';
 dotenv.config();
 
+//로그인 두번 하면??
+
 const hasData = (datas)=>{
   return (res)=>{
     res.body.should.be.instanceof(Array);

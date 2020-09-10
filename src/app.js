@@ -19,6 +19,9 @@ import userRouter from "./Routers/user";
 import expressSession from 'express-session';
 import productRouter from './Routers/product';
 import qnaRouter from './Routers/qna';
+import orderRouter from './Routers/order';
+import basketRouter from './Routers/basket';
+import reviewRouter from './Routers/review';
 
 
 const PORT = process.env.PORT || 4000;
@@ -55,6 +58,9 @@ app.use(cors());
 app.use('/user',userRouter);
 app.use('/product', productRouter);
 app.use('/qna', qnaRouter);
+app.use('/order', orderRouter); 
+app.use('/basket', basketRouter); 
+app.use('/review', reviewRouter);
 
 app.get('/',(req,res)=>{
     res.send('home');
@@ -63,5 +69,5 @@ app.get('/',(req,res)=>{
 app.use((err, req, res, next) => { // 에러 처리 부분
     console.error(err.stack); // 에러 메시지 표시
     res.status(500).send('서버 에러!'); // 500 상태 표시 후 에러 메시지 전송
-  });
+});
 export default app;
