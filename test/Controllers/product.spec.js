@@ -20,26 +20,27 @@ const hasDataType = (dataConstructor,dataLen,datas)=>{
 }
 describe('product controllers test ', ()=>{
     let productId;
+    const adminId = 'admin',adminPass='admin';
+    const userId = 'user',userPass='admin';
     before(async function(){
         const price=1,
+        name='n1',
         stock=1,
         description='a',
         thumbnail='tq',
         imageUrl='url1';
-        const product = await prisma.product.create({data:{price:2, stock, description, thumbnail, imageUrl}});
-        await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
-        await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
+        const product = await prisma.product.create({data:{price:2, stock, description, thumbnail, imageUrl,name}});
+        await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl,name}});
+        await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl,willDelete:true,name}});
 
-        const newpassword = await bcypt.hash('p1',Number(process.env.BCRYPTHASH));
-        await prisma.user.create({data:{userId:"i1", 
+        const newpassword = await bcypt.hash(adminPass,Number(process.env.BCRYPTHASH));
+        await prisma.user.create({data:{userId:adminId, 
             password:newpassword,
-            phone:'p1',
-            name:'n1',
+            name:'admin',
             isAdmin:true}});
 
-        await prisma.user.create({data:{userId:"i2", 
+        await prisma.user.create({data:{userId, 
             password:newpassword,
-            phone:'p2',
             name:'n2',
             isAdmin:false}});
 
@@ -54,7 +55,7 @@ describe('product controllers test ', ()=>{
         it('상품들 얻어오기', (done)=>{
             request(app)
             .get('/product')
-            .expect(hasDataType(Array,3,["price", "stock", "imageUrl"]))
+            .expect(hasDataType(Array,2,["price", "stock", "imageUrl"]))
             .end((err,res)=>{
                 if(err){
                     return done(err);
@@ -69,25 +70,26 @@ describe('product controllers test ', ()=>{
             it('admin 계정으로 로그인',done=>{
                 agent
                 .post("/user/login")
-                .send({userId:"i1",password:"p1"})
+                .send({userId:adminId,password:adminPass})
                 .expect(200,done);
             });
             it('product 추가', done=>{
                 agent
                 .post('/product/add')
-                .send({price:12, stock:12, imageUrl:'urladd'})
+                .send({price:12, stock:12, imageUrl:'urladd',name:'s'})
                 .expect(201,done);
             })
         });
         describe('일반사용자가 추가요청을 보낼 때 ',()=>{
-            it('admin 계정으로 로그인',done=>{
-                request(app)
+            const agent = request.agent(app);
+            it('일반 계정으로 로그인',done=>{
+                agent
                 .post("/user/login")
-                .send({userId:"i2",password:"p1"})
+                .send({userId,password:userPass})
                 .expect(200,done);
             });
             it('product 추가', done=>{
-                request(app)
+                agent
                 .post('/product/add')
                 .send({price:12, stock:12, imageUrl:'urladd'})
                 .expect(403,done);
@@ -98,25 +100,51 @@ describe('product controllers test ', ()=>{
     })
 
     describe('willdelete controller', ()=>{
-        it('product 인스턴스에 willdelete를 true 로 만듬',done=>{
-            request(app)
-            .post(`/product/willdelete?productId=${productId}`)
-            .expect(res=>{
-                res.status.should.be.eql(201);
-                res.body.willDelete.should.be.eql(true);
+        describe('일반사용자가 요청',()=>{
+            const agent = request.agent(app);
+            it('일반 계정으로 로그인',done=>{
+                agent
+                .post("/user/login")
+                .send({userId:userId,password:userPass})
+                .expect(200,done);
+            });
+            it('product 추가', done=>{
+                agent
+                .post('/product/add')
+                .send({price:12, stock:12, imageUrl:'urladd'})
+                .expect(403,done);
             })
-            .end((err,res)=>{
-                if(err)return done(err);
-                done();
-            })
-
         })
+        describe('admin 이 호출', ()=>{
+            const agent = request.agent(app);
+            it('admin 계정으로 로그인',done=>{
+                agent
+                .post("/user/login")
+                .send({userId:adminId,password:adminPass})
+                .expect(200,done);
+            });
+
+            it('product 인스턴스에 willdelete를 true 로 만듬',done=>{
+                agent
+                .post(`/product/willdelete?productId=${productId}`)
+                .expect(res=>{
+                    res.status.should.be.eql(201);
+                    res.body.willDelete.should.be.eql(true);
+                })
+                .end((err,res)=>{
+                    if(err)return done(err);
+                    done();
+                })
+    
+            })
+        })
+       
     })
     describe('delete controller', ()=>{
         it('delete', done=>{
             request(app)
             .post(`/product/delete?productId=${productId}`)
-            .expect(201,done);
+            .expect(403,done);
         })
     })
 })

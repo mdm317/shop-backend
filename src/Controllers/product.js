@@ -4,7 +4,9 @@ import prisma from '../db'
 export const getProductsController = async(req,res)=>{
     try {
         const products = await prisma.product.findMany({});
-        res.json(products);
+        const notDeleteProducts = products.filter(pro=>
+            pro.willDelete===false);
+        res.json(notDeleteProducts);
     } catch (error) {
         console.log(error);
         throw error;
@@ -12,29 +14,28 @@ export const getProductsController = async(req,res)=>{
 
 }
 export const addProductController = async(req,res)=>{
-    console.log(req.user);
-    if(req.user && req.user.isAdmin){
-        const {body:{price,
+
+    const {body:{price,
+        stock,
+        description,
+        thumbnail,
+        imageUrl,
+        name}}= req;
+    try {
+        const post = await prisma.product.create({data:{
+            price,
             stock,
             description,
             thumbnail,
-            imageUrl}}= req;
-        try {
-            const post = await prisma.product.create({data:{
-                price,
-                stock,
-                description,
-                thumbnail,
-                imageUrl
-            }});
-            res.status(201).json(post);
-        } catch (error) {
-            console.log(error);
-            res.status(500).send({ error});
-        }
-    }else{
-        res.redirect(403,'/');
+            imageUrl,
+            name
+        }});
+        res.status(201).json(post);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error});
     }
+
 }
 export const willDeleteProductController = async(req,res)=>{
     const {productId} = req.query;
@@ -49,6 +50,8 @@ export const willDeleteProductController = async(req,res)=>{
     res.status(201).json(product);
 }
 export const deleteProductController = async(req,res)=>{
+    res.sendStatus(403);
+
     const {productId} = req.query;//?
     try {
         await prisma.product.delete({

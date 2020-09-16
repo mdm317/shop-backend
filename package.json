@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "nodemon --exec babel-node src/app.js",
-    "test": "cross-env NODE_ENV=test mocha -r  @babel/register ./test/Controllers/review.spec.js",
+    "test": "cross-env NODE_ENV=test mocha -r  @babel/register ./test/Controllers/product.spec.js",
     "test2":"cross-env NODE_ENV=test mocha -r  @babel/register ./test/mochaTest.spec.js"
   },
   "author": "",

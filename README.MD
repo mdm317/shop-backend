@@ -11,20 +11,25 @@ status 만 return 해야 하나?
 + [x] /join
 + [x] /checkId  ajax
 + [x] /editProfile
+
 /product
 + [x] /
 + [x] /add
 + [x] /willdelete
 + [x] /delete
+
 /qna
 + [x] /addQuestion
 + [x] /addAnswer
 + [x] /edit/:qId
 + [x] /get
+
 /order
 + [x] /add
+
 /review
 + [x] /add
+
 /basket
 + [x] /add
 + [x] /delete 
