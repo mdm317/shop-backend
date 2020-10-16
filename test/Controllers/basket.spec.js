@@ -10,32 +10,40 @@ import bcypt from 'bcrypt';
 import dotenv from 'dotenv';
 dotenv.config();
 let id1,id2,id3;
+
+let admin;
 before(async function(){
-    const newpassword = await bcypt.hash('p',Number(process.env.BCRYPTHASH));
-    await prisma.user.create({data:{
-        userId:"user", 
+    const newpassword = await bcypt.hash('admin',Number(process.env.BCRYPTHASH));
+ /*    admin = await prisma.user.create({data:{
+        userId:"admin", 
         password:newpassword,
-        phone:'p1',
         name:'n1',
-        isAdmin:true}});
+        isAdmin:true}}); */
+        admin= await prisma.user.findOne({
+            where:{
+                userId:"admin"
+            }
+        })
     const price=1,
     stock=1,
     description='a',
     thumbnail='tq',
     imageUrl='url1';
-    const {id:id_1} =await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
+/*     const {id:id_1} =await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
     const {id:id_2} =await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
     const {id:id_3} =await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
     id1 = id_1;
     id2 = id_2;
-    id3 = id_3;
+    id3 = id_3; */
 });
 after(async function(){
-    await prisma.user.deleteMany();
-    await prisma.basket.deleteMany();
-    await prisma.product.deleteMany();
-})
+    // await prisma.user.deleteMany();
+    // await prisma.basket.deleteMany();
+    // await prisma.product.deleteMany();
+});
 
+
+/* 
 describe('basket  controller',()=>{
     const agent = request.agent(app);
     it('login',done=>{
@@ -80,3 +88,4 @@ describe('basket  controller',()=>{
     }); 
 });
 
+ */

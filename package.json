@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "start": "nodemon --exec babel-node src/app.js",
-    "test": "cross-env NODE_ENV=test mocha -r  @babel/register ./test/Controllers/product.spec.js",
-    "test2":"cross-env NODE_ENV=test mocha -r  @babel/register ./test/mochaTest.spec.js"
+    "test": "cross-env NODE_ENV=test mocha -r  @babel/register ./test/Controllers/order.spec.js",
+    "test2": "cross-env NODE_ENV=test mocha -r  @babel/register ./test/mochaTest.spec.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "@babel/preset-env": "^7.11.0",
     "@prisma/cli": "^2.5.1",
     "@prisma/client": "^2.5.1",
+    "aws-sdk": "^2.771.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -25,6 +26,8 @@
     "express-session": "^1.17.1",
     "helmet": "^4.1.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
   },

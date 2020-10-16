@@ -1,14 +1,12 @@
 import prisma from "../db"
 
 export const addQuestionController = async(req,res)=>{
-    const {title,content,productId} = req.body;
-    
-    if(!productId){
+    const {content,productId} = req.body;
+    if(!productId || req.user.isAdmin){
         return res.status(403).send('bad request');
     }
     const {id:userId} = req.user;
     const newQuestion =  await prisma.qna.create({data:{
-        title,
         content,
         user:{
             connect:{
@@ -30,11 +28,20 @@ export const addAnswerController = async(req,res)=>{
         return res.status(403).send('You must be admin')
     }
     
-    const {title,content,qId,productId} = req.body;
-    console.log(req.body);
+    const {content,qId,productId} = req.body;
+    const question = await prisma.qna.findOne({
+        where:{
+            id:qId
+        },
+        include:{
+            answer:true
+        }
+    });
+    if(question.answerId){
+        return res.status(403).send('exist answer');
+    }
     const answer = await prisma.qna.create({
         data:{
-            title,
             content,
             question:{
                 connect:{
@@ -82,8 +89,71 @@ export const editQnaController = async(req,res)=>{
 export const getQnasController = async(req,res)=>{
     const qnas = await prisma.qna.findMany({
         where:{
-            userId:req.user.id
+            userId:req.user.id,
+        },
+        include:{
+            answer:true,
+            question:true,
+            product:true
         }
     });
-    return res.json(qnas);
+    return res.json(newQnas);
+}
+export const getQuestionController = async(req,res)=>{
+    const {qnaId} = req.query;
+    const qna = await prisma.qna.findOne({
+        where:{
+            id:qnaId
+        },
+        include:{
+            product:{
+                select:{
+                    id:true
+                }
+            }
+        }
+    });
+    // console.log(qna);
+    return res.json(qna);
+}
+export const getQuestionByProduct = async(req,res)=>{
+    const {productId} = req.query;
+    const qnas = await prisma.qna.findMany({
+        where:{
+            productId
+        },
+        include:{
+            user:true,
+            answer:true,
+            question:true,
+        },
+        orderBy:{
+            createdAt:"desc"
+        }
+    });
+    const newQnas = qnas.filter(qna=>
+        qna.question===null
+    );
+    return res.status(201).json({productId,qnaList:newQnas});
+}
+export const getAllQnasController= async(req,res)=>{
+    const qnas = await prisma.qna.findMany({
+        include:{
+            user:true,
+            answer:true,
+            question:true,
+            product:{
+                select:{
+                    id:true
+                }
+            }
+        },
+        orderBy:{
+            createdAt:"desc"
+        }
+    });
+    const newQnas = qnas.filter(qna=>
+        qna.question===null
+    );
+    return res.status(201).json(newQnas);
 }

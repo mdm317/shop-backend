@@ -11,14 +11,18 @@ dotenv.config();
 describe('agent  request 의 연결 지속성 차이', ()=>{
   const password = "p1";
   before(async()=>{
-    const newpassword = await bcypt.hash('p1',Number(process.env.BCRYPTHASH));
-    await prisma.user.create({data:{userId:"i1", password:newpassword,phone:'p1',name:'n1'}});
+    const newpassword = await bcypt.hash('admin',Number(process.env.BCRYPTHASH));
+    await prisma.user.create({data:{
+      userId:"admin", 
+      password:newpassword,
+      name:'admin',
+      isAdmin:true}});
     app.get('/haveCookie',(req,res)=>{
       res.send(req.signedCookies);
     })
   })
   after(()=>{
-    return prisma.user.deleteMany();
+    // return prisma.user.deleteMany();
   })
 
   describe('agent',()=>{

@@ -22,16 +22,35 @@ import qnaRouter from './Routers/qna';
 import orderRouter from './Routers/order';
 import basketRouter from './Routers/basket';
 import reviewRouter from './Routers/review';
+import imageRouter from './Routers/image';
+
 
 
 const PORT = process.env.PORT || 4000;
-
+app.use(cors({
+    origin:"http://localhost:3000",
+    credentials:true
+}));
 app.use(helmet());
 if (process.env.NODE_ENV !== "test") app.use(morgan("dev"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+/* app.use((req, res, next) => { 
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000")
+    res.header("Access-Control-Allow-Credentials", "true")  
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if(req.method === 'OPTIONS'){
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET'); 
+        return res.status(200).json({});
+    }
+    next();
+}) */
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
     resave:false,   
@@ -41,7 +60,7 @@ app.use(expressSession({
         httpOnly :true,
         secure : false,
     },
-    name :'rnbck',
+    name :'dvsev',
 }));
 
 app.use(passport.initialize());
@@ -54,16 +73,18 @@ const handleListening = () =>console.log(`✅ Listening on: http://localhost:${P
 
 app.listen(PORT, handleListening);
 
-app.use(cors());
+
 app.use('/user',userRouter);
 app.use('/product', productRouter);
 app.use('/qna', qnaRouter);
 app.use('/order', orderRouter); 
 app.use('/basket', basketRouter); 
 app.use('/review', reviewRouter);
+app.use('/image', imageRouter);
 
 app.get('/',(req,res)=>{
-    res.send('home');
+    const point = 300;
+    res.json({point});
 })
 
 app.use((err, req, res, next) => { // 에러 처리 부분

@@ -11,26 +11,46 @@ export const putProductInController = async(req,res)=>{
         }
     });
     if(!basket.length){
-        const newBasket = await prisma.basket.create({
+        const productTobasket = await prisma.product.update({
+            where:{
+                id:productId
+            },
             data:{
-                user:{
-                    connect:{
-                        id:req.user.id
-                    }
-                },
-                products:{
-                    connect:{
-                        id:productId
+                baskets:{
+                    create:{
+                        user:{
+                            connect:{
+                                id:req.user.id
+                            }
+                        }
                     }
                 }
             },
             include:{
-                products:true
+                productImage:true
             }
         })
-        res.status(201).json(newBasket);
+        console.log(productTobasket);
+        res.status(201).json(productTobasket);
     }else if(basket.length===1){
-        const newProduct = await prisma.product.update({
+        const probaskets = await prisma.product.findOne({
+            where:{
+                id:productId
+            },
+            include:{
+                baskets:true
+            }
+        });
+        let exist = 0;
+        probaskets.baskets.forEach(basket=>{
+            if(basket.id === basket.id){
+                exist=1;
+            }
+        })
+        if(exist){
+            return res.status(200).send("");
+        }
+        const productTobasket = await prisma.product.update({
             where:{
                 id:productId
             },
@@ -41,14 +61,11 @@ export const putProductInController = async(req,res)=>{
                     }
                 }
             },
-        })
-        const newBasket = await prisma.basket.findOne({
-            where:{id:basket[0].id},
             include:{
-                products:true
+                productImage:true
             }
         })
-        res.status(201).json(newBasket);
+        res.status(201).json(productTobasket);
         //밑의 거랑 동작의 차이가 무어일까?
 /*         console.log('basket', basket);
         const curBasket = basket[0];
@@ -101,17 +118,25 @@ export const takeProductOutController = async(req,res)=>{
     if(basket[0].products.length==0){
         return res.sendStatus(403);
     }
-    await prisma.product.update({
+    const newBasket = await prisma.basket.update({
         where:{
-            id:productId
+            id:basket.id,
+            userId:req.user.id
         },
         data:{
-            baskets:{
+            products:{
                 disconnect:{
-                    id:basket[0].id
+                    id:productId
+                }
+            }
+        },
+        include:{
+            products:{
+                include:{
+                    productImage:true
                 }
             }
         }
     });
-    res.sendStatus(201);
+    res.status(201).json(newBasket.products);
 }

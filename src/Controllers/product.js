@@ -3,7 +3,20 @@ import prisma from '../db'
 
 export const getProductsController = async(req,res)=>{
     try {
-        const products = await prisma.product.findMany({});
+        const products = await prisma.product.findMany({
+            include:{
+                productImage:{
+                    orderBy:{
+                        idx:"asc"
+                    }
+                },
+                reviews:{
+                    include:{
+                        user: true
+                    }
+                }
+            }
+        });
         const notDeleteProducts = products.filter(pro=>
             pro.willDelete===false);
         res.json(notDeleteProducts);
@@ -19,18 +32,32 @@ export const addProductController = async(req,res)=>{
         stock,
         description,
         thumbnail,
-        imageUrl,
+        imgUrls,
         name}}= req;
+    const urls = imgUrls.map(img=> ({url:img.url,idx:Number(img.idx)}));
+    let newThumbnail;
+    if(!thumbnail){
+        newThumbnail=imgUrls[0].url;
+    }else{
+        newThumbnail= thumbnail;
+    }
     try {
-        const post = await prisma.product.create({data:{
+        const product = await prisma.product.create({data:{
             price,
             stock,
             description,
-            thumbnail,
-            imageUrl,
-            name
-        }});
-        res.status(201).json(post);
+            thumbnail:newThumbnail,
+            name,
+            productImage:{
+                create:urls
+                
+            }}
+            ,include:{
+                productImage:true
+            }
+        });
+        
+        res.status(201).json(product);
     } catch (error) {
         console.log(error);
         res.status(500).send({ error});
