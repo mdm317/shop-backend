@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+// import '@babel/polyfill';
 import './db';
 import passport from "passport"
 import './passport';
