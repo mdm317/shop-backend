@@ -1,5 +1,6 @@
 // import '@babel/polyfill';
-import passport from "passport"
+// import passport from "passport"
+const passport = require('passport');
 import "./db";
 import './passport';
 
