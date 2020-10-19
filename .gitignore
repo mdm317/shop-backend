@@ -81,3 +81,5 @@ static
 upload
 uploads
 build
+migrations/
+sss/
