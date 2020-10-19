@@ -1,6 +1,6 @@
 // import '@babel/polyfill';
-import "./db";
 import passport from "passport"
+import "./db";
 import './passport';
 
 import dotenv from 'dotenv';
