@@ -73,7 +73,6 @@ typings/
 .serverless
 
 # FuseBox cache
-.babelrc
 .fusebox/
 package-lock.json
 static
@@ -83,3 +82,4 @@ uploads
 build
 migrations/
 sss/
+babel-src/

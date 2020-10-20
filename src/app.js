@@ -29,7 +29,7 @@ import imageRouter from './Routers/image';
 
 const PORT = process.env.PORT || 4000;
 app.use(cors({
-    origin:"http://localhost:3000",
+    origin:process.env.URL,
     credentials:true
 }));
 app.use(helmet());
