@@ -101,7 +101,7 @@ export const joinController = async(req,res,next)=>{
 
         const hashedPassword = await bcrypt.hash(password,Number(process.env.BCRYPTHASH));
         await prisma.user.create({data:{
-            userId, password:hashedPassword, name, phone,email
+            userId, password:hashedPassword, name, phone,email,point:100000
         }});
         res.sendStatus(201);
     } catch (error) {

@@ -31,16 +31,22 @@ export const addProductController = async(req,res)=>{
     const {body:{price,
         stock,
         description,
-        thumbnail,
         imgUrls,
         name}}= req;
-    const urls = imgUrls.map(img=> ({url:img.url,idx:Number(img.idx)}));
+    const urls =[];
+    for(let i=0;i<imgUrls.length;++i){
+        if(i!=0){
+            const img = imgUrls[i];
+            urls.push({url:img.url,idx:Number(img.idx)});
+        }
+    }
     let newThumbnail;
-    if(!thumbnail){
+    if(imgUrls[0].url){
         newThumbnail=imgUrls[0].url;
     }else{
-        newThumbnail= thumbnail;
+        newThumbnail=imgUrls[1].url;
     }
+
     try {
         const product = await prisma.product.create({data:{
             price,
@@ -92,4 +98,22 @@ export const deleteProductController = async(req,res)=>{
         res.status(500).send(error);
     }
 
+}
+export const editProductController = async(req,res)=>{
+    const {id,price, stock, description, name,}=req.body;
+    const product = await prisma.product.update({
+        where:{
+            id
+        },
+        data:{
+            name,
+            price,
+            stock,
+            description,
+        },
+        include:{
+            productImage:true
+        }
+    });
+    res.status(201).json(product);
 }

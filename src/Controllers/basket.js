@@ -30,7 +30,6 @@ export const putProductInController = async(req,res)=>{
                 productImage:true
             }
         })
-        console.log(productTobasket);
         res.status(201).json(productTobasket);
     }else if(basket.length===1){
         const probaskets = await prisma.product.findOne({
@@ -139,4 +138,33 @@ export const takeProductOutController = async(req,res)=>{
         }
     });
     res.status(201).json(newBasket.products);
+}
+export const emptyBasket = async(req,res)=>{
+    const basket = await prisma.basket.findOne({
+        where:{
+            userId:req.user.id
+        },
+        include:{
+            products:{
+                select:{
+                    id:true
+                }
+            }
+        }
+    });
+    const ids = basket.products.map(pro=>({
+        id:pro.id
+    }));
+    console.log(ids);
+    await prisma.basket.update({
+        where:{
+            userId:req.user.id
+        },
+        data:{
+            products:{
+                disconnect:ids
+            }
+        }
+    });
+    return res.status(201).json([]);
 }

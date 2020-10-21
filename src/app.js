@@ -29,7 +29,7 @@ import imageRouter from './Routers/image';
 
 const PORT = process.env.PORT || 4000;
 app.use(cors({
-    origin:process.env.URL,
+    origin:process.env.FRONTURL,
     credentials:true
 }));
 app.use(helmet());

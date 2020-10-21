@@ -60,7 +60,6 @@ export const addOrderController = async(req,res)=>{
         return res.status(403).send('you need to recharge point');
     }
     const newStock = await checkEnoughStock(productIdAndCount);
-    console.log(newStock);
     if(newStock.length===0){
         return res.status(403).send('재고 부족');
     }
@@ -81,8 +80,6 @@ export const addOrderController = async(req,res)=>{
 
     try {
         
-        console.log(newStock);
-        console.log(newStock[0]);
         productIdAndCount.forEach(async(idAndCount,i)=>{//재고에서 물건삭제
             await prisma.product.update({
                 where:{
