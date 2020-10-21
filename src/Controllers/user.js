@@ -65,8 +65,9 @@ export const loginController = async(req,res,next)=>{
                 }
             });
             const cart = basket? basket.products:[];
-            // const fulluser = await db.User.findOne({
-            return res.json({user,cart});
+            // const fulluser = await db.User.findOne
+            const filterUser = filterPassword(user);
+            return res.json({user:filterUser,cart});
         });
     })(req,res,next);
 };

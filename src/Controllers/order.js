@@ -67,13 +67,10 @@ export const addOrderController = async(req,res)=>{
     const today = new Date();   
     let orderNumber="";
     orderNumber += today.getFullYear();
-    console.log('[orderNumber]:',orderNumber);
     
     orderNumber += today.getMonth()<"10"?"0"+today.getMonth():today.getMonth() + 1;
-    console.log('[orderNumber]:',orderNumber);
 
     orderNumber += today.getDate()<"10"?"0"+today.getDate():today.getDate();
-    console.log('[orderNumber]:',orderNumber);
 
     orderNumber += orderCount;
     //프로덕트 외부키 많이 연결하기?

@@ -155,7 +155,6 @@ export const emptyBasket = async(req,res)=>{
     const ids = basket.products.map(pro=>({
         id:pro.id
     }));
-    console.log(ids);
     await prisma.basket.update({
         where:{
             userId:req.user.id
