@@ -2,7 +2,7 @@ import prisma from '../db'
 import passport from 'passport';
 import dotenv from 'dotenv';
 dotenv.config();
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 const filterPassword = (user)=>{
     delete user.password;
     return user;

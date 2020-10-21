@@ -1,6 +1,5 @@
 import express from 'express';
 import { addImageController } from '../Controllers/image';
-import { isAdmin } from '../middlewares';
 import multer  from 'multer';
 import path from 'path';
 const imageRouter = express.Router();

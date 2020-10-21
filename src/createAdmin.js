@@ -1,5 +1,5 @@
 const { default: prisma } = require("./es6-db")
-const bcrypt  =require('bcrypt');
+const bcrypt  =require('bcryptjs');
 
 const createAdmin = async ()=>{
     const password = await bcrypt.hash('admin',Number(process.env.BCRYPTHASH));
