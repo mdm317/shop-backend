@@ -77,6 +77,14 @@ export const addOrderController = async(req,res)=>{
 
     try {
         
+        await prisma.user.update({  //user 의 cash update
+            where:{
+                id:req.user.id
+            },
+            data:{
+                point:remainCash
+            }
+        });
         productIdAndCount.forEach(async(idAndCount,i)=>{//재고에서 물건삭제
             await prisma.product.update({
                 where:{
@@ -88,14 +96,6 @@ export const addOrderController = async(req,res)=>{
             })
         });
     
-        await prisma.user.update({  //user 의 cash update
-            where:{
-                id:req.user.id
-            },
-            data:{
-                point:remainCash
-            }
-        });
         const ids = productIdAndCount.map(idAndCount=>{
             return {id:idAndCount.id}
         });
@@ -145,7 +145,7 @@ export const addOrderController = async(req,res)=>{
         });
     
         orderCount = (orderCount+1)%10000;
-        return res.status(200).json(order);
+        return res.status(200).json({order,remainCash});
     } catch (error) {
         console.log(error);
     }
