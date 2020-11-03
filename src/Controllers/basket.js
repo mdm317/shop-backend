@@ -30,6 +30,8 @@ export const putProductInController = async(req,res)=>{
                 productImage:true
             }
         })
+        console.log('[productTobasket]:',productTobasket);
+
         res.status(201).json(productTobasket);
     }else if(basket.length===1){
         const probaskets = await prisma.product.findOne({
@@ -41,8 +43,8 @@ export const putProductInController = async(req,res)=>{
             }
         });
         let exist = 0;
-        probaskets.baskets.forEach(basket=>{
-            if(basket.id === basket.id){
+        probaskets.baskets.forEach(basketsEl=>{
+            if(basketsEl.id === basket.id){
                 exist=1;
             }
         })
@@ -64,6 +66,8 @@ export const putProductInController = async(req,res)=>{
                 productImage:true
             }
         })
+        console.log('[productTobasket]:',productTobasket);
+        
         res.status(201).json(productTobasket);
         //밑의 거랑 동작의 차이가 무어일까?
 /*         console.log('basket', basket);
