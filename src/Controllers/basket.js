@@ -98,7 +98,7 @@ export const putProductInController = async(req,res)=>{
         res.status(201).json(newBasket); */
         
     }
-
+    res.sendStatus(500);
 }
 
 export const takeProductOutController = async(req,res)=>{
