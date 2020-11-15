@@ -1,91 +1,44 @@
-//똑같은 물건에 장바구니를 담을 경우는?
-//현재는 db가 바뀌거나 하짆 안는다
+/*eslint-disable */
+import app from "../../src/app";
+import request from "supertest";
+import should from "should";
 
-import app from '../../src/app';
-import request from 'supertest';
-import prisma from '../../src/db';
-import should from 'should';
-import bcypt from 'bcrypt';
+import { addDataInDB, product, user } from "../addDataInDB";
+import { resetDB } from "../resetDB";
 
-import dotenv from 'dotenv';
-dotenv.config();
-let id1,id2,id3;
-
-let admin;
-before(async function(){
-    const newpassword = await bcypt.hash('admin',Number(process.env.BCRYPTHASH));
- /*    admin = await prisma.user.create({data:{
-        userId:"admin", 
-        password:newpassword,
-        name:'n1',
-        isAdmin:true}}); */
-        admin= await prisma.user.findOne({
-            where:{
-                userId:"admin"
-            }
-        })
-    const price=1,
-    stock=1,
-    description='a',
-    thumbnail='tq',
-    imageUrl='url1';
-/*     const {id:id_1} =await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
-    const {id:id_2} =await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
-    const {id:id_3} =await prisma.product.create({data:{price, stock, description, thumbnail, imageUrl}});
-    id1 = id_1;
-    id2 = id_2;
-    id3 = id_3; */
-});
-after(async function(){
-    // await prisma.user.deleteMany();
-    // await prisma.basket.deleteMany();
-    // await prisma.product.deleteMany();
+before(addDataInDB);
+after(resetDB);
+const productId = product.id;
+it("비로그인시 장바구니 담기 요청시 401을 반환한다.", (done) => {
+  request(app)
+    .post("/basket/add")
+    .send({ productId: productId })
+    .expect(401, done);
 });
 
+describe("basket  controller with login", () => {
+  const agent = request.agent(app);
 
-/* 
-describe('basket  controller',()=>{
-    const agent = request.agent(app);
-    it('login',done=>{
-        agent
-        .post("/user/login")
-        .send({userId:"user",password:"p"})
-        .expect(200,done);
-    });
-    it('post putProductInController',done=>{
-        agent
-        .post("/basket/add")
-        .send({productId: id1})
-        .expect(201)
-        .expect(res=>{
-            res.body.products.should.be.instanceof(Array);
-        })
-        .end(err=>{
-            if(err)return done(err);
-            done();
-        })
-    });    
-    it('post putProductInController again',done=>{
-        agent
-        .post("/basket/add")
-        .send({productId: id2})
-        .expect(201)
-        .expect(res=>{
-            res.body.should.have.keys('products');
-            res.body.products.should.be.instanceof(Array);
-            res.body.products.should.have.length(2);
-        })
-        .end(err=>{
-            if(err)return done(err);
-            done();
-        })
-    }); 
-    it('post putProductInController again',done=>{
-        agent
-        .post("/basket/delete")
-        .send({productId: id1})
-        .expect(201,done)
-    }); 
+  it("login requset", (done) => {
+    agent
+      .post("/user/login")
+      .send({ ...user })
+      .expect(200, done);
+  });
+  it("장바구니에 성공적으로 담으면 담은 product 를 반환한다", (done) => {
+    agent
+      .post("/basket/add")
+      .send({ productId: productId })
+      .expect(201)
+      .expect((res) => {
+        res.body.should.have.property("id", productId);
+      })
+      .end((err) => {
+        if (err) return done(err);
+        done();
+      });
+  });
+  it("중복된 product 를 담으면 빈 문자열을 반환한다.", (done) => {
+    agent.post("/basket/add").send({ productId: productId }).expect(200, done);
+  });
 });
-
- */
