@@ -5,6 +5,7 @@ post 요청을 할때 변경된 결과 값을 반환해야 하나 아니면
 status 만 return 해야 하나?
 상황에 따라 다르나??
 
+버젼이 같은데 findone 이 안되는 이유는? 
 /user
 + [x] /
 + [x] /login

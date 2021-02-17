@@ -31,7 +31,7 @@ export const addAnswerController = async (req, res) => {
   }
 
   const { content, qId, productId } = req.body;
-  const question = await prisma.qna.findOne({
+  const question = await prisma.qna.findUnique({
     where: {
       id: qId,
     },
@@ -68,7 +68,7 @@ export const addAnswerController = async (req, res) => {
 export const editQnaController = async (req, res) => {
   const { qId } = req.params;
   const { title, content } = req.body;
-  const qna = await prisma.qna.findOne({
+  const qna = await prisma.qna.findUnique({
     where: { id: qId },
   });
   if (!qna || qna.userId !== req.user.id) {
@@ -101,7 +101,7 @@ export const getQnasController = async (req, res) => {
 };
 export const getQuestionController = async (req, res) => {
   const { qnaId } = req.query;
-  const qna = await prisma.qna.findOne({
+  const qna = await prisma.qna.findUnique({
     where: {
       id: qnaId,
     },

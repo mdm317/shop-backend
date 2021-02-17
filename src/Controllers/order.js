@@ -7,7 +7,7 @@ const checkEnoughStock = async (productIdAndCount) => {
   const newStock = [];
 
   for (const idAndCount of productIdAndCount) {
-    const product = await prisma.product.findOne({
+    const product = await prisma.product.findUnique({
       where: {
         id: idAndCount.id,
       },

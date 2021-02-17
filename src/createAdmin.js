@@ -1,4 +1,4 @@
-const { default: prisma } = require("./db");
+const prisma = require("./src/db");
 const bcrypt = require("bcryptjs");
 
 const createAdmin = async () => {

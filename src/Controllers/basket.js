@@ -34,7 +34,7 @@ export const putProductInController = async (req, res) => {
 
     return res.status(201).json(productTobasket);
   } else if (basket.length === 1) {
-    const probaskets = await prisma.product.findOne({
+    const probaskets = await prisma.product.findUnique({
       where: {
         id: productId,
       },
@@ -114,7 +114,7 @@ export const takeProductOutController = async (req, res) => {
   res.status(201).json(newBasket.products);
 };
 export const emptyBasket = async (req, res) => {
-  const basket = await prisma.basket.findOne({
+  const basket = await prisma.basket.findUnique({
     where: {
       userId: req.user.id,
     },

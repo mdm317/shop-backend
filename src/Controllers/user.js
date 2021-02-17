@@ -8,7 +8,7 @@ const filterPassword = (user) => {
   return user;
 };
 export const getProfileController = async (req, res) => {
-  const basket = await prisma.basket.findOne({
+  const basket = await prisma.basket.findUnique({
     where: {
       userId: req.user.id,
     },
@@ -50,7 +50,7 @@ export const loginController = async (req, res, next) => {
       if (loginErr) {
         return next(loginErr);
       }
-      const basket = await prisma.basket.findOne({
+      const basket = await prisma.basket.findUnique({
         where: {
           userId: user.id,
         },
@@ -79,7 +79,7 @@ export const checkIdController = async (req, res, next) => {
     const {
       query: { userId },
     } = req;
-    const user = await prisma.user.findOne({ where: { userId } });
+    const user = await prisma.user.findUnique({ where: { userId } });
     if (user) {
       return res.json({ possible: false, message: "아이디가 중복입니다." });
     }
@@ -117,7 +117,7 @@ export const editProfileController = async (req, res) => {
   try {
     const { userId, password, email, phone } = req.body;
     if (req.user) {
-      const user = prisma.user.findOne({ id: req.user.id });
+      const user = prisma.user.findUnique({ id: req.user.id });
       await prisma.user.update({
         where: {
           id: req.user.id,

@@ -110,7 +110,7 @@ export const editProductController = async (req, res) => {
 };
 export const getOneProductController = async (req, res) => {
   const { productId } = req.query;
-  const product = await prisma.product.findOne({
+  const product = await prisma.product.findUnique({
     where: {
       id: productId,
     },

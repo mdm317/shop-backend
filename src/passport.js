@@ -10,7 +10,7 @@ passport.serializeUser((user, done) => {
 // id와 cookie만 가지고 있는다.
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await prisma.user.findOne({
+    const user = await prisma.user.findUnique({
       where: { id },
     });
     return done(null, user); //req.user
@@ -28,7 +28,7 @@ passport.use(
     },
     async (userId, password, done) => {
       try {
-        const user = await prisma.user.findOne({
+        const user = await prisma.user.findUnique({
           where: { userId },
         });
 

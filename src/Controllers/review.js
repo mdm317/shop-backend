@@ -2,7 +2,7 @@ import prisma from "../db";
 
 export const addReviewController = async (req, res) => {
   const { content, rating, image, productId } = req.body;
-  const userBuyProduct = await prisma.userBuyProduct.findOne({
+  const userBuyProduct = await prisma.userBuyProduct.findUnique({
     where: {
       productId_userId: {
         productId,
