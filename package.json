@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "babel main-es6 -d compiled-es5",
+    "build": "babel src/app.js -o dist/app.js",
     "dev": "nodemon --exec",
     "start": "babel-node src/app.js",
     "server": "babel-node src/app.js",
