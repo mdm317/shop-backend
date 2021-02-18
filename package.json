@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "babel src/app.js -o dist/app.js",
+    "build":  "babel src -d dist",
     "dev": "nodemon --exec",
     "start": "babel-node src/app.js",
     "server": "babel-node src/app.js",
